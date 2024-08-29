@@ -6,7 +6,7 @@ export class urdu extends Document {
   @Prop({ required: true })
   sqlId: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   word: string;
 
   @Prop()
