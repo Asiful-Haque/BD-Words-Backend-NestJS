@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { urdu } from 'src/schemas/urdus.schema';
-import { WordOfTheDay } from 'src/schemas/Wot.schema';
+import { word_of_the_days } from 'src/schemas/Wot.schema';
 // import Hero from 'src/schemas/heros.schema';
 
 @Injectable()
 export class HomeService {
   constructor(
     @InjectModel(urdu.name) private urduSchemaModel: mongoose.Model<urdu>,
-    @InjectModel(WordOfTheDay.name)
-    private wotdSchemaModel: mongoose.Model<WordOfTheDay>,
+    @InjectModel(word_of_the_days.name)
+    private wotdSchemaModel: mongoose.Model<word_of_the_days>,
   ) {}
 
   async getRandomWord(): Promise<string[]> {
@@ -41,20 +41,22 @@ export class HomeService {
       'Nov',
       'Dec',
     ];
-    const dateTime = `${monthNames[currentdate.getMonth()]} ${dayString} ${currentdate.getFullYear()}`;
-    console.log(dateTime);
-    // Create a regex to match the date portion of the string
-    const regex = new RegExp(`\\b${dateTime}.*`, 'i');
+    const dateTime =
+      `${monthNames[currentdate.getMonth()]} ${dayString} ${currentdate.getFullYear()}`.trim();
 
-    // Find the word of the day using the regex
-    const result = await this.wotdSchemaModel.findOne({
-      date: { $regex: regex },
-    });
+    try {
+      const result = await this.wotdSchemaModel
+        .findOne({ date: dateTime })
+        .exec(); // Ensure query execution
 
-    if (!result) {
-      return 'No word of the day found for the current date.';
+      if (!result) {
+        return 'No word of the day found for the current date.';
+      }
+      return result.word;
+    } catch (error) {
+      console.error('Error querying the database:', error); // Log any errors
+      return 'An error occurred while fetching the word of the day.';
     }
-    return result.word;
   }
 
   async getHome() {
