@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HomeService } from './home.service';
-import { HomeController } from './home.controller';
+import { meaningController } from './meaning.controller';
+import { meaningService } from './meaning.service';
+import { HomeService } from 'src/home/home.service';
 import { urdu, UrduSchema } from 'src/schemas/urdus.schema';
 import { word_of_the_days, WotdSchema } from 'src/schemas/Wot.schema';
 
@@ -12,7 +13,7 @@ import { word_of_the_days, WotdSchema } from 'src/schemas/Wot.schema';
       { name: word_of_the_days.name, schema: WotdSchema },
     ]),
   ],
-  controllers: [HomeController],
-  providers: [HomeService],
+  controllers: [meaningController],
+  providers: [meaningService, HomeService],
 })
-export class HomeModule {}
+export class meaningModule {}

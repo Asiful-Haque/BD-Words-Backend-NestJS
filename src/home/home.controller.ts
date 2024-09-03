@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { HomeService } from './home.service';
 
 @Controller('urdu')
@@ -6,7 +6,7 @@ export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
   @Get('/')
-  async getRandomWord(): Promise<{
+  async getContents(): Promise<{
     randomWords: string[];
     wordOfTheDay: string;
   }> {
@@ -22,10 +22,5 @@ export class HomeController {
   @Get('/allData')
   getHome() {
     return this.homeService.getHome();
-  }
-
-  @Get('/english-to-:language-meaning-:word')
-  getMeaning(@Param('language') language: string, @Param('word') word: string) {
-    return this.homeService.getMeaning(language, word);
   }
 }

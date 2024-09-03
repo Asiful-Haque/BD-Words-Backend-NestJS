@@ -62,16 +62,4 @@ export class HomeService {
   async getHome() {
     return await this.urduSchemaModel.find().limit(5).exec();
   }
-
-  async getMeaning(language: string, word: string): Promise<urdu | string> {
-    const result = await this.urduSchemaModel.findOne({ word: word }).exec();
-    console.log(
-      `Result found for the word "${word}" in language "${language}".`,
-    );
-
-    if (!result) {
-      return `No result found for the word "${word}" in language "${language}".`;
-    }
-    return result.trans;
-  }
 }
