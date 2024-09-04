@@ -15,7 +15,7 @@ export class searchPopUpService {
   async searchPopUpData(language: string, word: string): Promise<string[]> {
     // console.log('function is called');
     const results = await this.urduSchemaModel
-      .find({ word: { $regex: word, $options: 'i' } })
+      .find({ word: { $regex: `^${word}`, $options: 'i' } })
       .exec();
 
     // console.log(results[0].word);

@@ -42,4 +42,30 @@ export class wordListService {
       totalPages,
     };
   }
+
+  async getWords(
+    language: string,
+    letter: string,
+    page: number,
+    perPage: number = 100,
+  ): Promise<{
+    letterWords: string[];
+    cPage: number;
+    tPages: number;
+  }> {
+    const result = await this.urduSchemaModel
+      .find({ word: { $regex: new RegExp(`^${letter}`, 'i') } }, 'word -_id')
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    const totalWords = await this.urduSchemaModel.countDocuments({
+      word: { $regex: new RegExp(`^${letter}`, 'i') },
+    });
+
+    const letterWords = result.map((entry) => entry.word);
+    const tPages = Math.ceil(totalWords / perPage);
+
+    return { letterWords, cPage: page, tPages };
+  }
 }

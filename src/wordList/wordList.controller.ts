@@ -38,9 +38,14 @@ export class wordListController {
     }
   }
 
-  //   @Get(':language/GET-WORDS/:letter')
-  //   async getWords(
-  //     @Param('language') language: string,
-  //     @Param('letter') letter: string,
-  //   ) {}
+  @Get('/GET-WORDS/:letter')
+  async getWords(
+    @Param('language') language: string,
+    @Param('letter') letter: string,
+    @Query('page') page = 1,
+  ): Promise<{ letterWords: string[]; cPage: number; tPages: number }> {
+    {
+      return await this.wordListService.getWords(language, letter, page);
+    }
+  }
 }
