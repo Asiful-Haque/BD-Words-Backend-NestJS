@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { urdu } from 'src/schemas/urdus.schema';
+import { LanguageEntry } from 'src/schemas/language.schema';
 import { word_of_the_days } from 'src/schemas/Wot.schema';
 // import Hero from 'src/schemas/heros.schema';
 
 @Injectable()
 export class HomeService {
   constructor(
-    @InjectModel(urdu.name) private urduSchemaModel: mongoose.Model<urdu>,
+    @InjectModel(LanguageEntry.name)
+    private urduSchemaModel: mongoose.Model<LanguageEntry>,
     @InjectModel(word_of_the_days.name)
     private wotdSchemaModel: mongoose.Model<word_of_the_days>,
   ) {}

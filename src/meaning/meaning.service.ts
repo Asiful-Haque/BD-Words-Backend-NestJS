@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { urdu } from 'src/schemas/urdus.schema';
+import { LanguageEntry } from 'src/schemas/language.schema';
 // import Hero from 'src/schemas/heros.schema';
 
 @Injectable()
 export class meaningService {
   constructor(
-    @InjectModel(urdu.name) private urduSchemaModel: mongoose.Model<urdu>,
+    @InjectModel(LanguageEntry.name)
+    private urduSchemaModel: mongoose.Model<LanguageEntry>,
   ) {}
 
   async getMeaning(language: string, word: string): Promise<string> {

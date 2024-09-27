@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema()
-export class urdu extends Document {
+export class LanguageEntry extends Document {
   @Prop({ required: true })
   sqlId: number;
 
@@ -49,4 +49,4 @@ export class urdu extends Document {
   restricted: string;
 }
 
-export const UrduSchema = SchemaFactory.createForClass(urdu);
+export const LanguageEntrySchema = SchemaFactory.createForClass(LanguageEntry);

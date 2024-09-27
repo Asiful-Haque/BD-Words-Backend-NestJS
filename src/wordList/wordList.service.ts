@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { urdu } from 'src/schemas/urdus.schema';
+import { LanguageEntry } from 'src/schemas/language.schema';
 
 @Injectable()
 export class wordListService {
   constructor(
-    @InjectModel(urdu.name) private urduSchemaModel: mongoose.Model<urdu>,
+    @InjectModel(LanguageEntry.name)
+    private urduSchemaModel: mongoose.Model<LanguageEntry>,
   ) {}
 
   async findAll(

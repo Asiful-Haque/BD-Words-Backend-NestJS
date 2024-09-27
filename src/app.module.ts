@@ -5,6 +5,7 @@ import { meaningModule } from './meaning/meaning.module';
 import { similarDataModule } from './similarData/similarData.module';
 import { searchPopUpModule } from './searchPopUp/searchPopUp.module';
 import { wordListModule } from './wordList/wordList.module';
+import { mcqModule } from './mcq/mcq.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { wordListModule } from './wordList/wordList.module';
     similarDataModule,
     searchPopUpModule,
     wordListModule,
+    mcqModule,
   ],
   controllers: [],
   providers: [],

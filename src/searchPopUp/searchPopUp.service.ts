@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { meaningService } from 'src/meaning/meaning.service';
-import { urdu } from 'src/schemas/urdus.schema';
+import { LanguageEntry } from 'src/schemas/language.schema';
 // import Hero from 'src/schemas/heros.schema';
 
 @Injectable()
 export class searchPopUpService {
   constructor(
-    @InjectModel(urdu.name) private urduSchemaModel: mongoose.Model<urdu>,
+    @InjectModel(LanguageEntry.name)
+    private urduSchemaModel: mongoose.Model<LanguageEntry>,
     private readonly meaningService: meaningService,
   ) {}
 
