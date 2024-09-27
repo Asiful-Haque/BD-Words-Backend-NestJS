@@ -23,7 +23,7 @@ export class meaningController {
       language,
       word,
     );
-    const randomWords = await this.homeService.getRandomWord();
+    const randomWords = await this.homeService.getRandomWord(language);
 
     return { meaning, sentExample, randomWords };
   }

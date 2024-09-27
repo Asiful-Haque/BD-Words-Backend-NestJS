@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { LanguageEntry } from 'src/schemas/language.schema';
+import { LanguageEntrySchema } from 'src/schemas/language.schema';
 
 @Injectable()
 export class wordListService {
   constructor(
-    @InjectModel(LanguageEntry.name)
-    private urduSchemaModel: mongoose.Model<LanguageEntry>,
+    @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
+  private getLanguageModel(language: string): mongoose.Model<any> {
+    const collectionName = `${language.toLowerCase()}s`;
+    return this.connection.model(collectionName, LanguageEntrySchema);
+  }
+
   async findAll(
+    language: string,
     page: number,
     perPage: number,
   ): Promise<{
@@ -22,13 +27,15 @@ export class wordListService {
     previousPage: number;
     totalPages: number;
   }> {
-    const results = await this.urduSchemaModel
+    const languageSchemaModel = this.getLanguageModel(language);
+
+    const results = await languageSchemaModel
       .find({}, 'word') // Only selecting the 'word' field
       .skip((page - 1) * perPage)
       .limit(perPage)
       .exec();
 
-    const totalWords = await this.urduSchemaModel.countDocuments({}).exec();
+    const totalWords = await languageSchemaModel.countDocuments({}).exec();
     const totalPages = Math.ceil(totalWords / perPage);
 
     const words = results.map((doc) => doc.word); // Extract only the 'word' field
@@ -54,13 +61,14 @@ export class wordListService {
     cPage: number;
     tPages: number;
   }> {
-    const result = await this.urduSchemaModel
+    const languageSchemaModel = this.getLanguageModel(language);
+    const result = await languageSchemaModel
       .find({ word: { $regex: new RegExp(`^${letter}`, 'i') } }, 'word -_id')
       .skip((page - 1) * perPage)
       .limit(perPage)
       .exec();
 
-    const totalWords = await this.urduSchemaModel.countDocuments({
+    const totalWords = await languageSchemaModel.countDocuments({
       word: { $regex: new RegExp(`^${letter}`, 'i') },
     });
 

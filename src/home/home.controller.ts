@@ -1,16 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { HomeService } from './home.service';
 
-@Controller('urdu')
+@Controller('/:language')
 export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
   @Get('/')
-  async getContents(): Promise<{
+  async getContents(@Param('language') language: string): Promise<{
     randomWords: string[];
     wordOfTheDay: string;
   }> {
-    const randomWords = await this.homeService.getRandomWord();
+    const randomWords = await this.homeService.getRandomWord(language);
     const wordOfTheDay = await this.homeService.getWordOfTheDay();
 
     return {
@@ -19,8 +19,8 @@ export class HomeController {
     };
   }
 
-  @Get('/allData')
-  getHome() {
-    return this.homeService.getHome();
-  }
+  // @Get('/allData')
+  // getHome() {
+  //   return this.homeService.getHome(language);
+  // }
 }

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { wordListService } from './wordList.service';
 
-@Controller('urdu')
+@Controller('/:language')
 export class wordListController {
   constructor(private readonly wordListService: wordListService) {}
 
@@ -27,7 +27,11 @@ export class wordListController {
     totalPages: number;
   }> {
     try {
-      const result = await this.wordListService.findAll(Number(page), 100);
+      const result = await this.wordListService.findAll(
+        language,
+        Number(page),
+        100,
+      );
       return { language, ...result };
     } catch (error) {
       console.error('Error retrieving contents:', error);

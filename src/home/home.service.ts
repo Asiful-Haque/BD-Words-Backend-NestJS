@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { LanguageEntry } from 'src/schemas/language.schema';
+import { LanguageEntrySchema } from 'src/schemas/language.schema';
 import { word_of_the_days } from 'src/schemas/Wot.schema';
 // import Hero from 'src/schemas/heros.schema';
 
 @Injectable()
 export class HomeService {
   constructor(
-    @InjectModel(LanguageEntry.name)
-    private urduSchemaModel: mongoose.Model<LanguageEntry>,
+    @InjectConnection() private readonly connection: mongoose.Connection,
     @InjectModel(word_of_the_days.name)
     private wotdSchemaModel: mongoose.Model<word_of_the_days>,
   ) {}
 
-  async getRandomWord(): Promise<string[]> {
-    const randomWords = await this.urduSchemaModel
+  // Dynamically get the language model
+  private getLanguageModel(language: string): mongoose.Model<any> {
+    const collectionName = `${language.toLowerCase()}s`;
+    return this.connection.model(collectionName, LanguageEntrySchema);
+  }
+
+  async getRandomWord(language: string): Promise<string[]> {
+    const languageSchemaModel = this.getLanguageModel(language);
+    const randomWords = await languageSchemaModel
       .aggregate([
         { $sample: { size: 5 } }, // Select 5 random documents
         { $project: { _id: 0, word: 1 } }, // Include only the 'word' field
@@ -60,7 +66,8 @@ export class HomeService {
     }
   }
 
-  async getHome() {
-    return await this.urduSchemaModel.find().limit(5).exec();
-  }
+  // async getHome(language: string): Promise<string[]> {
+  //   const languageSchemaModel = this.getLanguageModel(language);
+  //   return await languageSchemaModel.find().limit(5).exec();
+  // }
 }

@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { LanguageEntry } from 'src/schemas/language.schema';
+import { LanguageEntrySchema } from 'src/schemas/language.schema';
 // import Hero from 'src/schemas/heros.schema';
 
 @Injectable()
 export class meaningService {
   constructor(
-    @InjectModel(LanguageEntry.name)
-    private urduSchemaModel: mongoose.Model<LanguageEntry>,
+    @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
+  private getLanguageModel(language: string): mongoose.Model<any> {
+    const collectionName = `${language.toLowerCase()}s`;
+    return this.connection.model(collectionName, LanguageEntrySchema);
+  }
   async getMeaning(language: string, word: string): Promise<string> {
-    const result = await this.urduSchemaModel.findOne({ word: word }).exec();
+    const languageSchemaModel = this.getLanguageModel(language);
+    const result = await languageSchemaModel.findOne({ word: word }).exec();
     console.log(
       `Result found for the word "${word}" in language "${language}".`,
     );
@@ -24,7 +28,8 @@ export class meaningService {
   }
 
   async shuffledSentences(language: string, word: string): Promise<string[]> {
-    const result = await this.urduSchemaModel.findOne({ word: word }).exec();
+    const languageSchemaModel = this.getLanguageModel(language);
+    const result = await languageSchemaModel.findOne({ word: word }).exec();
     if (!result || !result.sentences) {
       return []; // Return an empty array if no result or sentences found
     }
