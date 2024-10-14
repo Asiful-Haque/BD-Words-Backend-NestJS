@@ -1,11 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { HomeService } from './home.service';
 
-@Controller('/:language')
+@Controller('/')
 export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
-  @Get('/')
+  @Get('/:language')
   async getContents(@Param('language') language: string): Promise<{
     randomWords: string[];
     wordOfTheDay: string;

@@ -6,6 +6,7 @@ import { similarDataModule } from './similarData/similarData.module';
 import { searchPopUpModule } from './searchPopUp/searchPopUp.module';
 import { wordListModule } from './wordList/wordList.module';
 import { mcqModule } from './mcq/mcq.module';
+import { Game1Module } from './game1/game1.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { mcqModule } from './mcq/mcq.module';
     searchPopUpModule,
     wordListModule,
     mcqModule,
+    Game1Module,
   ],
   controllers: [],
   providers: [],

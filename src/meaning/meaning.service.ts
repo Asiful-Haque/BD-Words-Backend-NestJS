@@ -16,6 +16,8 @@ export class meaningService {
   }
   async getMeaning(language: string, word: string): Promise<string> {
     const languageSchemaModel = this.getLanguageModel(language);
+    // console.log(language, word);
+    // console.log("model is", languageSchemaModel);
     const result = await languageSchemaModel.findOne({ word: word }).exec();
     console.log(
       `Result found for the word "${word}" in language "${language}".`,

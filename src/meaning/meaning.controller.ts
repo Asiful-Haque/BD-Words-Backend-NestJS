@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { meaningService } from './meaning.service';
 import { HomeService } from 'src/home/home.service';
 
-@Controller('urdu')
+@Controller('/:language')
 export class meaningController {
   constructor(
     private readonly meaningService: meaningService,
