@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { wordListService } from './wordList.service';
 
-@Controller('/:language')
+@Controller('')
 export class wordListController {
   constructor(private readonly wordListService: wordListService) {}
 
-  @Get('/english-to-:language-wordList')
+  @Get('/:language/english-to-:language-wordList')
   async getContents(
     @Param('language') language: string,
     @Query('page') page = 1,

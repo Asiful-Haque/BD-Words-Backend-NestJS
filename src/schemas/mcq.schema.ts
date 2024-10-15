@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema()
-export class fill_blank_quiz extends Document {
+export class fill_blank_quizes extends Document {
   @Prop({ required: true })
   id: number;
 
@@ -25,4 +25,4 @@ export class fill_blank_quiz extends Document {
   answer: string;
 }
 
-export const QuizSchema = SchemaFactory.createForClass(fill_blank_quiz);
+export const QuizSchema = SchemaFactory.createForClass(fill_blank_quizes);

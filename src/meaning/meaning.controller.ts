@@ -2,14 +2,14 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { meaningService } from './meaning.service';
 import { HomeService } from 'src/home/home.service';
 
-@Controller('/:language')
+@Controller('')
 export class meaningController {
   constructor(
     private readonly meaningService: meaningService,
     private readonly homeService: HomeService,
   ) {}
 
-  @Get('/english-to-:language-meaning-:word')
+  @Get('/:language/english-to-:language-meaning-:word')
   async getContents(
     @Param('language') language: string,
     @Param('word') word: string,
