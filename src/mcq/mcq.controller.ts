@@ -16,7 +16,7 @@ export class mcqController {
   constructor(private readonly mcqService: mcqService) {}
 
   @Get('/mcq/fillInTheBlanks')
-  async getMcqData(): Promise<FillBlankQuiz> {
+  async getMcqData(): Promise<FillBlankQuiz[]> {
     const response = await this.mcqService.getRandomMcq();
     console.log(response);
     return response;

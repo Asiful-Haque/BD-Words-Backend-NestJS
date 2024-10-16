@@ -10,10 +10,10 @@ export class mcqService {
     private fill_blank_quiz_SchemaModel: mongoose.Model<fill_blank_quizes>,
   ) {}
 
-  async getRandomMcq(): Promise<fill_blank_quizes> {
+  async getRandomMcq(): Promise<fill_blank_quizes[]> {
     const quiz = await this.fill_blank_quiz_SchemaModel.aggregate([
-      { $sample: { size: 1 } }, // Use $sample to get one random document
+      { $sample: { size: 10 } }, // Use $sample to get one random document
     ]);
-    return quiz.length > 0 ? quiz[0] : null;
+    return quiz.length > 0 ? quiz : null;
   }
 }
