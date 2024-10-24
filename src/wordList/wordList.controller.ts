@@ -42,14 +42,29 @@ export class wordListController {
     }
   }
 
-  @Get('/GET-WORDS/:letter')
+  @Get('/:language/GET-WORDS/:letter')
   async getWords(
     @Param('language') language: string,
     @Param('letter') letter: string,
     @Query('page') page = 1,
   ): Promise<{ letterWords: string[]; cPage: number; tPages: number }> {
-    {
-      return await this.wordListService.getWords(language, letter, page);
+    try {
+      const result = await this.wordListService.getWords(
+        language,
+        letter,
+        page,
+      );
+      return { ...result };
+    } catch (error) {
+      console.error('Error retrieving contents:', error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
+
+    // {
+    //   return await this.wordListService.getWords(language, letter, page);
+    // }
   }
 }
