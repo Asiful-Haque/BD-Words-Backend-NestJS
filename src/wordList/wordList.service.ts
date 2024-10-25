@@ -57,9 +57,13 @@ export class wordListService {
     page: number,
     perPage: number = 100,
   ): Promise<{
-    letterWords: string[];
-    cPage: number;
-    tPages: number;
+    words: string[];
+    currentPage: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    nextPage: number;
+    previousPage: number;
+    totalPages: number;
   }> {
     const languageSchemaModel = this.getLanguageModel(language);
     const result = await languageSchemaModel
@@ -72,9 +76,17 @@ export class wordListService {
       word: { $regex: new RegExp(`^${letter}`, 'i') },
     });
 
-    const letterWords = result.map((entry) => entry.word);
-    const tPages = Math.ceil(totalWords / perPage);
+    const words = result.map((entry) => entry.word);
+    const totalPages = Math.ceil(totalWords / perPage);
 
-    return { letterWords, cPage: page, tPages };
+    return {
+      words,
+      currentPage: page,
+      hasNextPage: perPage * page < totalWords,
+      hasPreviousPage: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      totalPages,
+    };
   }
 }
